@@ -28,11 +28,11 @@
 </head>
 <body>
 	<div class="container mt-2"
-		style="display: flex; padding-left: 50px; padding-top: 40px;">
+		style="display: flex; padding-left: 3px; padding-top: 40px;">
 		<div class="box-1"
-			style="border: 2px solid grey; border-radius: 15%; padding-left: 650px; padding-top: 520px;"></div>
+			style="border: 2px solid grey; border-radius: 15%; padding-left: 550px; padding-top: 520px;"></div>
 		<div class="box-2"
-			style="margin-left: 60px; width: 450px; padding-top: 70px;">
+			style="margin-left: 60px; width: 540px; padding-top: 70px;">
 			<div class="card">
 				<div class="card-header h3 text-tertiary">User Log In</div>
 				<div class="card-body">
@@ -40,7 +40,7 @@
 						<div class="row">
 							<div class="col-6 text-center">
 								<label for="userName" class="font-weight-bold"
-									style="font-size: large;">User Name</label>
+									style="font-size: x-large;">User Name</label>
 							</div>
 							<div class="col-6 mb-5	">
 								<input id="usrId" type="text" class="form-control"
@@ -48,15 +48,14 @@
 							</div>
 							<div class="col-6 text-center">
 								<label for="pass" class="font-weight-bold"
-									style="font-size: large;">Password</label>
+									style="font-size: x-large;">Password</label>
 							</div>
 							<div class="col-6 mb-5">
 								<input id="passId" type="password" class="form-control"
 									name="pass">
 							</div>
-							<div class="col-7">
-								<button class="btn btn-primary" type="button" onclick="redirectToRegister()">New
-									User Sign Up</button>
+							<div class="col-7 text-center">
+									<a href="signUp" style="text-decoration: none; font-size: x-large" class="text-primary">New User Sign Up</a>
 							</div>
 							<div class="col-5 text-center">
 								<input id="log" type="submit" class="btn btn-success"
@@ -69,23 +68,7 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		function redirectToRegister() {
-			console.log("hitting")
-			$.ajax({
-				url : 'redirectToRegister',
-				type : 'GET',
-				data : {
-
-				},
-
-				success : function(response) {
-
-				},
-				error : function(error) {
-					console.log(error);
-				}
-			});
-		}
+		
 	</script>
 </body>
 </html>
