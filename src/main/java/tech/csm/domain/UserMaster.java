@@ -2,13 +2,13 @@ package tech.csm.domain;
 
 import java.io.Serializable;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -20,13 +20,13 @@ import lombok.ToString;
 @Setter
 @ToString
 
-@Table(name = "user_registration")
-public class UserRegistration implements Serializable {
+@Table(name = "user_master")
+public class UserMaster implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "r_id")
-	private Integer rId;
+	@Column(name = "u_id")
+	private Integer uId;
 
 	@Column(name = "user_name")
 	private String userName;
@@ -34,22 +34,10 @@ public class UserRegistration implements Serializable {
 	@Column(name = "password")
 	private String password;
 
-	@Column(name = "phone_no")
-	private String phoneNo;
+	@Column(name = "user_role")
+	private String userRole;
 
-	@Column(name = "dob")
-	private String dob;
+	@OneToOne(mappedBy = "userMaster", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+	private UserRegistration userRegistration;
 
-	@Column(name = "sex")
-	private String sex;
-
-	@Column(name = "email")
-	private String email;
-
-	@Column(name = "address")
-	private String address;
-
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "u_id", referencedColumnName = "u_id")
-	private UserMaster userMaster;
 }
