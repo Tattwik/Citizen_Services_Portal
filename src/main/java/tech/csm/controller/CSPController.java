@@ -5,11 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,6 +22,7 @@ import tech.csm.domain.Practice;
 import tech.csm.domain.UserMaster;
 import tech.csm.domain.UserRegistration;
 import tech.csm.repository.PracticeRepo;
+import tech.csm.service.PracticeService;
 import tech.csm.service.RegisterService;
 import tech.csm.service.UserService;
 
@@ -31,6 +37,9 @@ public class CSPController {
 
 	@Autowired
 	private PracticeRepo practiceRepo;
+	
+	@Autowired
+	private PracticeService practiceService;
 
 	@GetMapping("/homepage")
 	public String getHomePage() {
@@ -63,12 +72,11 @@ public class CSPController {
 	}
 
 	@ResponseBody
-	@GetMapping("/getdata")
-	public Map<String, Object> getData(HttpServletResponse resp) throws IOException {
-		List<Practice> data = practiceRepo.findAll();
-		Map<String, Object> dataMap = new HashMap<>();
-		dataMap.put("data", data);
-		return dataMap;
-
+	@GetMapping("/getdataByName")
+	public String getDataByName(@RequestParam(value = "pageSize1", required = false) Integer pageSize,
+			@RequestParam(value = "pageNumber1", required = false) Integer pageNumber,
+			@RequestParam(value = "stateName", required = false) String stateName) {
+		Pageable pageable = PageRequest.of(pageNumber, pageSize - 1);
+		return practiceService.getData(stateName,pageSize, pageNumber,pageable);
 	}
 }

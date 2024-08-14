@@ -32,4 +32,7 @@ public class Practice implements Serializable {
 	@Column(name="email")
 	private String email;
 	
+	@Column(name="state")
+	private String state;
+	
 }
