@@ -6,4 +6,6 @@ public interface UserService {
 
 	UserMaster saveUser(UserMaster user);
 
+	String validateUser(String userName, String password);
+
 }

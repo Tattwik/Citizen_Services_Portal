@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,7 +62,8 @@ public class CSPController {
 		user.setUserRole("User");
 		UserMaster u = userService.saveUser(user);
 		System.out.println(u);
-		userRegistration.setUserMaster(u);
+		userRegistration.setUserName(u.getUserName());
+		userRegistration.setUId(u.getUId());
 		UserRegistration u1 = registerService.registerUser(userRegistration);
 		System.out.println(u1);
 		return "redirect:./homepage";
@@ -71,6 +74,16 @@ public class CSPController {
 		return "practice";
 	}
 
+	@PostMapping("/login") 
+	public String login(@ModelAttribute UserMaster userMaster, Model model, RedirectAttributes rd ) {
+		System.out.println(userMaster);
+		String userName = userMaster.getUserName();
+		String password = userMaster.getPassword();
+		String res = userService.validateUser(userName, password);
+	    model.addAttribute("msg", "Hello");
+        return "HomePage";
+	}
+	
 	@ResponseBody
 	@GetMapping("/getdataByName")
 	public String getDataByName(@RequestParam(value = "pageSize1", required = false) Integer pageSize,

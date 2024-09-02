@@ -37,7 +37,4 @@ public class UserMaster implements Serializable {
 	@Column(name = "user_role")
 	private String userRole;
 
-	@OneToOne(mappedBy = "userMaster", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-	private UserRegistration userRegistration;
-
 }

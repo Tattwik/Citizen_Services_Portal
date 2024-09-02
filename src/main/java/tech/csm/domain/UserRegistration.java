@@ -49,7 +49,6 @@ public class UserRegistration implements Serializable {
 	@Column(name = "address")
 	private String address;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "u_id", referencedColumnName = "u_id")
-	private UserMaster userMaster;
+    @Column(name="u_id")
+    private Integer uId;
 }

@@ -23,6 +23,8 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -30,13 +32,16 @@
 	<div class="container mt-2"
 		style="display: flex; padding-left: 3px; padding-top: 40px;">
 		<div class="box-1"
-			style="border: 2px solid grey; border-radius: 15%; padding-left: 550px; padding-top: 520px;"></div>
+			style="border: 2px solid grey; border-radius: 15%; padding-left: 550px; padding-top: 520px;">
+			<img alt="senior citizen" src="">
+		</div>
 		<div class="box-2"
 			style="margin-left: 60px; width: 540px; padding-top: 70px;">
 			<div class="card">
 				<div class="card-header h3 text-tertiary">User Log In</div>
 				<div class="card-body">
-					<form>
+					<form action="./login" method="post" id="loginFormId"
+						onsubmit="return validateForm()">
 						<div class="row">
 							<div class="col-6 text-center">
 								<label for="userName" class="font-weight-bold"
@@ -52,14 +57,19 @@
 							</div>
 							<div class="col-6 mb-5">
 								<input id="passId" type="password" class="form-control"
-									name="pass">
+									name="password">
 							</div>
 							<div class="col-7 text-center">
-									<a href="signUp" style="text-decoration: none; font-size: x-large" class="text-primary">New User Sign Up</a>
+								<a href="signUp"
+									style="text-decoration: none; font-size: x-large"
+									class="text-primary">New User Sign Up</a>
 							</div>
 							<div class="col-5 text-center">
-								<input id="log" type="submit" class="btn btn-success"
-									value="LOGIN">
+								<button type="submit" class="btn btn-primary" id="btnSubmit">LOGIN</button>
+							</div>
+							<div class="col-12">
+							<label for="msg" class="font-weight-bold text-danger text-center" 
+							style="font-size: medium;">${msg}</label>
 							</div>
 						</div>
 					</form>
@@ -68,7 +78,21 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		
+		function validateForm() {
+			var user = $('#usrId');
+			var pass = $('#passId');
+			if (user.val().trim() == '') {
+               user.focus();
+               Swal.fire("Please enter user name!");
+               return false;
+			}
+			if (pass.val().trim() == '') {
+               pass.focus();
+               Swal.fire("Please enter password");
+               return false;
+			}
+			return true;
+		}
 	</script>
 </body>
 </html>
