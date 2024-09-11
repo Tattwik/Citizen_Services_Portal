@@ -17,4 +17,9 @@ public class RegisterServiceImpl implements RegisterService {
 		return registerRepo.save(userRegistration);
 	}
 
+	@Override
+	public UserRegistration findUser(String name) {
+		return registerRepo.findUser(name);
+	}
+
 }

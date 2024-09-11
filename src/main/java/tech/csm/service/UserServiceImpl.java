@@ -21,10 +21,23 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public String validateUser(String userName, String password) {
+		String res = "okay";
 		List<UserMaster> userList = userRepo.findUser(userName);
         System.out.println(userList);
-        
-		return "hello";
+        if (userList.size() == 0) {
+        	res = "User name or password is incorrect";
+        } else {
+        	System.out.println(userList.get(0).getPassword());
+        	if (!userList.get(0).getPassword().equals(password)) {
+        		res = "Password is incorrect";
+        	}
+        }
+        if (res.equals("User name or password is incorrect") || res.equals("Password is incorrect")) {
+        	return res;
+        } else {
+        	res = userList.get(0).getUserRole();
+        	return res;
+        }
 	}
 
 }

@@ -29,11 +29,15 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+	<div class="head text-center">
+		<div class="h2 text-tertiary" style="font-family: fantasy;
+		 font-variant: small-caps;">CITIZEN SERVICES PORTAL</div>
+	</div>
+
 	<div class="container mt-2"
 		style="display: flex; padding-left: 3px; padding-top: 40px;">
-		<div class="box-1"
-			style="border: 2px solid grey; border-radius: 15%; padding-left: 550px; padding-top: 520px;">
-			<img alt="senior citizen" src="">
+		<div class="box-1" style="border: 2px solid grey; border-radius: 15%;">
+			<img alt="senior citizen" src="images/oldie.jfif" height="540px">
 		</div>
 		<div class="box-2"
 			style="margin-left: 60px; width: 540px; padding-top: 70px;">
@@ -67,9 +71,11 @@
 							<div class="col-5 text-center">
 								<button type="submit" class="btn btn-primary" id="btnSubmit">LOGIN</button>
 							</div>
-							<div class="col-12">
-							<label for="msg" class="font-weight-bold text-danger text-center" 
-							style="font-size: medium;">${msg}</label>
+							<div class="col-12 text-center">
+								<label for="msg"
+									class="font-weight-bold text-danger text-center"
+									style="font-size: medium; font-family: sans-serif;
+									font-variant: small-caps;">${msg}</label>
 							</div>
 						</div>
 					</form>
@@ -82,14 +88,14 @@
 			var user = $('#usrId');
 			var pass = $('#passId');
 			if (user.val().trim() == '') {
-               user.focus();
-               Swal.fire("Please enter user name!");
-               return false;
+				user.focus();
+				Swal.fire("Please enter user name!");
+				return false;
 			}
 			if (pass.val().trim() == '') {
-               pass.focus();
-               Swal.fire("Please enter password");
-               return false;
+				pass.focus();
+				Swal.fire("Please enter password");
+				return false;
 			}
 			return true;
 		}

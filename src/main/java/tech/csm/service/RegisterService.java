@@ -6,4 +6,6 @@ public interface RegisterService {
 
 	UserRegistration registerUser(UserRegistration userRegistration);
 
+	UserRegistration findUser(String attribute);
+
 }
