@@ -1,5 +1,7 @@
 package tech.csm.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,26 @@ public class BirthCAServiceImpl implements BirthCAService {
 	@Override
 	public BirthCertificateApplicationMaster saveBC(BirthCertificateApplicationMaster birth) {
 		return bCARepo.save(birth);
+	}
+
+	@Override
+	public List<BirthCertificateApplicationMaster> getAllByrId(Integer rId) {
+		return bCARepo.getAllByrId(rId);
+	}
+
+	@Override
+	public List<BirthCertificateApplicationMaster> getAll() {
+		return bCARepo.getAllPending();
+	}
+
+	@Override
+	public int approveBirth(int bId) {
+		return bCARepo.approveBirth(bId);
+	}
+
+	@Override
+	public BirthCertificateApplicationMaster getData(int bId) {
+		return bCARepo.getData(bId);
 	}
 
 }

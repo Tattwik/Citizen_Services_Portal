@@ -27,10 +27,9 @@ import lombok.ToString;
 @Table(name="birth_certificate_application_master")
 public class BirthCertificateApplicationMaster implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	
+	@Id	
 	@Column(name="b_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer bId;
 	
 	@Column(name="child_name")
@@ -73,6 +72,10 @@ public class BirthCertificateApplicationMaster implements Serializable {
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private String appliedOn;
 	
-	@Column(name="r_id")
-	private Integer rId;
+	@ManyToOne
+	@JoinColumn(name="r_id")
+	private UserRegistration userRegd;
+	
+	@Column(name="status")
+	private String status;
 }

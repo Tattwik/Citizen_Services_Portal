@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -90,6 +92,28 @@ public class CSPController {
 		return "applyBirthCertificate";
 	}
 	
+	@GetMapping("/view")
+	public String viewBirthCertificate(HttpSession sess, Model model) {
+		 String userName = (String) sess.getAttribute("userName");
+		    String user = (String) sess.getAttribute("user");
+		    if (userName == null || user == null) {
+		    	sess.invalidate();  
+		        return "redirect:./logout";
+		    }
+            UserRegistration  reg = registerService.findUser(userName);
+		    List<BirthCertificateApplicationMaster> birthList = bCAService.getAllByrId(reg.getRId());
+		    model.addAttribute("birthList", birthList);
+		    model.addAttribute("userName", userName);
+		    model.addAttribute("user", user);
+		    
+		return "viewBirthCertificate";
+	}
+	
+	@GetMapping("/viewAdmin")
+	public String viewAdmin(HttpSession sess, Model model) {
+		return null;
+	}
+	
 	@GetMapping("/getDistrictByState")
 	public void getDistrictByState(HttpServletResponse resp, @Param("stateId") Integer stateId) {
 		List<DistrictMaster> districtList = districtService.getDistrictByStateId(stateId);
@@ -124,7 +148,67 @@ public class CSPController {
 	    return "dashboard";
 	}
 
-
+    @GetMapping("/adminDashboard")
+    public String adminDashboard(HttpSession sess, RedirectAttributes rd, Model model) {
+    	String userName = (String) sess.getAttribute("userName");
+	    String user = (String) sess.getAttribute("user");
+	    if (userName == null || user == null) {
+	    	sess.invalidate();  
+	        return "redirect:./logout";
+	    }
+	    List<BirthCertificateApplicationMaster> birthList = bCAService.getAll();
+	    System.out.println(birthList);
+	    for (BirthCertificateApplicationMaster birth : birthList) {
+			System.out.println(birth.getBId());
+		}
+	    model.addAttribute("birthList", birthList);
+	    model.addAttribute("userName", userName);
+	    model.addAttribute("user", user);
+	    
+	    return "adminDashboard";
+    }
+	
+    @GetMapping("/downloadFile")
+    public String downloadBC(@RequestParam("birth") String birth, @RequestParam("fileName") String file,
+    		RedirectAttributes rd, Model model) {
+    	Pattern pattern = Pattern.compile("bId=[^,]*");
+        Matcher matcher = pattern.matcher(birth);
+        if (matcher.find()) {
+            System.out.println(matcher.group()); 
+        }
+        String s = matcher.group();
+        String  s1 = s.substring(4);
+        int bId =  Integer.parseInt(s1);
+        BirthCertificateApplicationMaster bc = bCAService.getData(bId);
+        model.addAttribute("bc", bc);
+        System.out.println(bc);
+    	return "birthCertificatePdf";
+    }
+      
+    @GetMapping("/approve")
+    public String approveBC(@RequestParam("birth") String birth, RedirectAttributes rd, Model model) {
+    	System.out.println(birth);  
+    	Pattern pattern = Pattern.compile("bId=[^,]*");
+        Matcher matcher = pattern.matcher(birth);
+        if (matcher.find()) {
+            System.out.println(matcher.group()); 
+        }
+        String s = matcher.group();
+        String  s1 = s.substring(4);
+       System.out.println(s1);
+        int bId =  Integer.parseInt(s1);
+        System.out.println(bId);
+        int approveBirth = bCAService.approveBirth(bId);
+    	if (approveBirth < 0) {
+    		String msg = "Error! Something went wrong!";
+    		model.addAttribute("msgN", msg);
+    	    return "redirect:./adminDashboard";
+    	}
+    	String msg = "Approved successfully!";
+    	model.addAttribute("msgP",msg);
+    	 return "redirect:./adminDashboard";
+    }
+    
 	@PostMapping("/register")
 	public String register(Model model, @ModelAttribute UserRegistration userRegistration, RedirectAttributes rd) {
 		System.out.println(userRegistration);
@@ -152,6 +236,11 @@ public class CSPController {
 			model.addAttribute("msg", res);
 			return "HomePage";
 		}
+		if (res.equals("Admin")) {
+			sess.setAttribute("userName", userName);
+			sess.setAttribute("user", res);
+			return "redirect:./adminDashboard";
+		}
 		sess.setAttribute("userName", userName);
 		sess.setAttribute("user", res);
 		return "redirect:./dashboard";
@@ -161,14 +250,15 @@ public class CSPController {
 	public String applyBC(@ModelAttribute BirthCertificateApplicationMaster birth, RedirectAttributes rd, HttpSession sess) {
 	   birth.setAddressProof(birth.getFile().getOriginalFilename());
 	   UserRegistration reg = registerService.findUser((String) sess.getAttribute("userName"));
-	   birth.setRId(reg.getRId());
+	   birth.setUserRegd(reg);
 	   LocalDate today = LocalDate.now();
        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
        String formattedDate = today.format(formatter);
 	   birth.setAppliedOn(formattedDate);
+	   birth.setStatus("PENDING");
 	   BirthCertificateApplicationMaster bca = bCAService.saveBC(birth);
 	   System.out.println(bca);
-		return "redirect:./dashboard";
+		return "redirect:./view";
 	}
 	
 	@GetMapping("/sessionLogout")
