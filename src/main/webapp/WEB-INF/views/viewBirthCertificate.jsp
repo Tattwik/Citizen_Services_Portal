@@ -75,6 +75,10 @@
 											<button class="btn btn-danger" disabled>Download
 												Birth Certificate</button>
 										</c:when>
+										<c:when test="${birth.status == 'REJECTED'}">
+											<button class="btn btn-secondary" disabled>Download
+												Birth Certificate</button>
+										</c:when>
 										<c:otherwise>
 											<a
 												href="./downloadFile?fileName=${birth.addressProof}&birth=${birth}"
@@ -84,6 +88,7 @@
 											</a>
 										</c:otherwise>
 									</c:choose></td>
+
 								<td>${birth.status}</td>
 							</tr>
 						</c:forEach>

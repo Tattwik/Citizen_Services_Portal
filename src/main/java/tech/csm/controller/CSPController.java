@@ -2,6 +2,8 @@ package tech.csm.controller;
 
 import java.io.IOException;
 import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -170,7 +172,7 @@ public class CSPController {
 	
     @GetMapping("/downloadFile")
     public String downloadBC(@RequestParam("birth") String birth, @RequestParam("fileName") String file,
-    		RedirectAttributes rd, Model model) {
+    		RedirectAttributes rd, Model model) throws ParseException {
     	Pattern pattern = Pattern.compile("bId=[^,]*");
         Matcher matcher = pattern.matcher(birth);
         if (matcher.find()) {
@@ -180,13 +182,23 @@ public class CSPController {
         String  s1 = s.substring(4);
         int bId =  Integer.parseInt(s1);
         BirthCertificateApplicationMaster bc = bCAService.getData(bId);
+        String s2 = bc.getDob();
+
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MMM/yyyy");
+
+        Date date = inputFormat.parse(s2);
+
+        String formattedDob = outputFormat.format(date);
         model.addAttribute("bc", bc);
+        model.addAttribute("dob", formattedDob);
         System.out.println(bc);
     	return "birthCertificatePdf";
     }
       
     @GetMapping("/approve")
-    public String approveBC(@RequestParam("birth") String birth, RedirectAttributes rd, Model model) {
+    public String approveBC(@RequestParam("birth") String birth, RedirectAttributes rd, Model model, HttpSession sess) {
     	System.out.println(birth);  
     	Pattern pattern = Pattern.compile("bId=[^,]*");
         Matcher matcher = pattern.matcher(birth);
@@ -198,13 +210,37 @@ public class CSPController {
        System.out.println(s1);
         int bId =  Integer.parseInt(s1);
         System.out.println(bId);
-        int approveBirth = bCAService.approveBirth(bId);
+        String authority = (String) sess.getAttribute("userName");
+        int approveBirth = bCAService.approveBirth(bId, authority);
     	if (approveBirth < 0) {
     		String msg = "Error! Something went wrong!";
     		model.addAttribute("msgN", msg);
     	    return "redirect:./adminDashboard";
     	}
     	String msg = "Approved successfully!";
+    	model.addAttribute("msgP",msg);
+    	 return "redirect:./adminDashboard";
+    }
+    
+    @GetMapping("/reject")
+    public String rejectBC(@RequestParam("birth") String birth, RedirectAttributes rd, Model model, HttpSession sess) {
+    	Pattern pattern = Pattern.compile("bId=[^,]*");
+        Matcher matcher = pattern.matcher(birth);
+        if (matcher.find()) {
+            System.out.println(matcher.group()); 
+        }
+        String s = matcher.group();
+        String  s1 = s.substring(4);
+       System.out.println(s1);
+        int bId =  Integer.parseInt(s1);
+        System.out.println(bId);
+        int rejectBirth = bCAService.rejectBirth(bId);
+        if (rejectBirth < 0) {
+    		String msg = "Error! Something went wrong!";
+    		model.addAttribute("msgN", msg);
+    	    return "redirect:./adminDashboard";
+    	}
+    	String msg = "Rejected successfully!";
     	model.addAttribute("msgP",msg);
     	 return "redirect:./adminDashboard";
     }

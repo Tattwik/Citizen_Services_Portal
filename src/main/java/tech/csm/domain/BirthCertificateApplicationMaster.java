@@ -78,4 +78,7 @@ public class BirthCertificateApplicationMaster implements Serializable {
 	
 	@Column(name="status")
 	private String status;
+	
+	@Column(name="approved_by")
+	private String approvedBy;
 }

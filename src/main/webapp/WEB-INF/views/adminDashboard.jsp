@@ -71,9 +71,9 @@
 								<td>${counter.count}</td>
 								<td>Birth Application</td>
 								<td>${birth.userRegd.userName}</td>
+								<td>${birth.appliedOn}</td>
 								<td>${birth.childName}</td>
 								<td>${birth.fatherName}</td>
-								<td>${birth.appliedOn}</td>
 								<td>${birth.gender}</td>
 								<td><a href="./downloadFile?fileName=${birth.addressProof}">${birth.addressProof}</a></td>
 								<td><a href="./approve?birth=${birth}"

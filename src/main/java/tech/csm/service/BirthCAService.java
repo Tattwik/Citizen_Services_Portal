@@ -12,8 +12,10 @@ public interface BirthCAService {
 
 	List<BirthCertificateApplicationMaster> getAll();
 
-	int approveBirth(int bId);
+	int approveBirth(int bId, String authority);
 
 	BirthCertificateApplicationMaster getData(int bId);
+
+	int rejectBirth(int bId);
 
 }

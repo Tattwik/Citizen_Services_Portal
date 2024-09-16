@@ -30,13 +30,18 @@ public class BirthCAServiceImpl implements BirthCAService {
 	}
 
 	@Override
-	public int approveBirth(int bId) {
-		return bCARepo.approveBirth(bId);
+	public int approveBirth(int bId, String userName) {
+		return bCARepo.approveBirth(bId,userName);
 	}
 
 	@Override
 	public BirthCertificateApplicationMaster getData(int bId) {
 		return bCARepo.getData(bId);
+	}
+
+	@Override
+	public int rejectBirth(int bId) {
+		return bCARepo.rejectBirth(bId);
 	}
 
 }

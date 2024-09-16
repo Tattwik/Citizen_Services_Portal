@@ -22,10 +22,15 @@ public interface BirthCARepo extends JpaRepository<BirthCertificateApplicationMa
 
 	@Modifying
 	@Transactional
-	@Query(value = "UPDATE birth_certificate_application_master SET status='APPROVED' WHERE b_id=:bId", nativeQuery = true)
-	int approveBirth(@Param("bId") Integer bId);
+	@Query(value = "UPDATE birth_certificate_application_master SET status='APPROVED' , approved_by=:userName WHERE b_id=:bId", nativeQuery = true)
+	int approveBirth(@Param("bId") Integer bId, @Param("userName") String userName);
 
 	@Query(value="SELECT * FROM birth_certificate_application_master WHERE b_id=:bId", nativeQuery = true)
 	BirthCertificateApplicationMaster getData(@Param("bId") Integer bId);
+
+	@Modifying
+	@Transactional
+	@Query(value = "UPDATE birth_certificate_application_master SET status='REJECTED'  WHERE b_id=:bId", nativeQuery = true)
+	int rejectBirth(@Param("bId") Integer bId);
 
 }

@@ -36,8 +36,8 @@
 
 	<div class="container mt-2"
 		style="display: flex; padding-left: 3px; padding-top: 40px;">
-		<div class="box-1" style="border: 2px solid grey; border-radius: 15%;">
-			<img alt="senior citizen" src="images/oldie.jfif" height="540px">
+		<div class="box-1" style="border: 2px solid grey;">
+			<img alt="senior citizen" src="images/family.jfif" height="440px">
 		</div>
 		<div class="box-2"
 			style="margin-left: 60px; width: 540px; padding-top: 70px;">

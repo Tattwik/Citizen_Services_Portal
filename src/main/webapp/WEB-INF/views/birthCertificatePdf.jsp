@@ -24,13 +24,24 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-
-	<div class="container"
+	<!-- PDF Download Button -->
+	<div class="m-2" style="text-align: right;">
+		<button id="download-pdf" class="btn btn-tertiary"
+			style="border-radius: 6px; border: 2px solid black;"
+			data-toggle="tooltip" title="Download as PDF">
+			<i class="fas fa-file-pdf"></i>
+		</button>
+	</div>
+	<div id="certificate-container" class="container"
 		style="border: 5px solid grey; height: 100vh; width: 50vw; border-radius: 2%">
 		<div class="h2 text-center mt-2">
 			<label
@@ -38,38 +49,86 @@
 				CERTIFICATE</label>
 		</div>
 		<div class="h3 text-center">
-			<label
-				style="font-family: cursive; font-style: italic;">This is to certify that</label>
+			<label style="font-family: cursive; font-style: italic;">This
+				is to certify that</label>
 		</div>
 		<div class="h4 text-center">
 			<label
-				style="font-family: cursive; font-style: italic; font-variant: small-caps;
-				text-decoration: underline;"> ${bc.childName} </label>
+				style="font-family: cursive; font-style: italic; font-variant: small-caps; text-decoration: underline;">
+				${bc.childName} </label>
 		</div>
 		<div class="h3 text-center">
-			<label
-				style="font-family: cursive; font-style: italic;">was born to</label>
+			<label style="font-family: cursive; font-style: italic;">was
+				born to</label>
 		</div>
 		<div class="h4 text-center">
 			<label
-				style="font-family: cursive; font-style: italic; font-variant: small-caps;
-				text-decoration: underline;"> ${bc.motherName} </label>&nbsp;
-			<label class="h3"
+				style="font-family: cursive; font-style: italic; font-variant: small-caps; text-decoration: underline;">
+				${bc.motherName} </label>&nbsp; <label class="h3"
 				style="font-family: cursive; font-style: italic;">and</label>&nbsp;
 			<label
-				style="font-family: cursive; font-style: italic; font-variant: small-caps;
-				text-decoration: underline;"> ${bc.fatherName} </label>
+				style="font-family: cursive; font-style: italic; font-variant: small-caps; text-decoration: underline;">
+				${bc.fatherName} </label>
 		</div>
-		<div class="h3" style="margin-left: 280px;">
+		<div class="h3 text-center">
+			<label style="font-family: cursive; font-style: italic;">on</label>
+		</div>
+		<div class="h4 text-center">
 			<label
-				style="font-family: cursive; font-style: italic;">on</label>
+				style="font-family: cursive; font-style: italic; font-variant: small-caps; text-decoration: underline;">
+				${dob} </label>
 		</div>
-		<div class="h4" style="margin-left: 235px;">
+		<div class="h3 text-center">
+			<label style="font-family: cursive; font-style: italic;">at</label>
+		</div>
+		<div class="h4 text-center">
 			<label
-				style="font-family: cursive; font-style: italic; font-variant: small-caps;
-				text-decoration: underline;"> ${bc.dob} </label>
+				style="font-family: cursive; font-style: italic; font-variant: small-caps; text-decoration: underline;">
+				${bc.houseNoLocalityZip} , ${bc.placeOfBirth} </label>
 		</div>
+		<div  class="mt-5" style="text-align: right">
+			<label class="h4"
+				style="font-family: cursive; font-style: italic; font-variant: small-caps;">
+				Approved By</label>
+		</div>
+		<div style="text-align: right;">
+			<label class="h4"
+				style="font-family: cursive; font-style: italic; font-variant: small-caps; text-decoration: underline;">
+				${bc.approvedBy}</label>
+		</div>
+
 	</div>
 
+	<script>
+	 $(document).ready(function(){
+		    $('[data-toggle="tooltip"]').tooltip(); 
+		  });
+	
+  document.getElementById('download-pdf').addEventListener('click', function () {
+    html2canvas(document.querySelector('#certificate-container'), {
+      scale: 1.5  // Adjust the scale to capture a smaller image
+    }).then(function(canvas) {
+      const imgData = canvas.toDataURL('image/png');
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF('p', 'mm', 'a4');
+
+      const pageWidth = 210; // A4 width in mm
+      const pageHeight = 297; // A4 height in mm
+      const imgWidth = pageWidth - 20; // Decrease width for margins
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      let position = 10; // Start with some margin from the top
+
+      // Ensure the image fits within the page height
+      if (imgHeight > pageHeight - 20) {
+        doc.addImage(imgData, 'PNG', 10, position, imgWidth, pageHeight - 20);
+      } else {
+        doc.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+      }
+
+      doc.save('birth_certificate.pdf');
+    });
+  });
+</script>
 </body>
 </html>
