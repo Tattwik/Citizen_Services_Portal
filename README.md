@@ -19,7 +19,7 @@ Administrators validate and approve applications.
 
 PDF Generation and Download
 
-Approved certificates can be generated in PDF format.
+Approved certificates can be generated in PDF format using HTML2Canvas.
 
 Users can download certificates for personal use.
 
@@ -37,7 +37,7 @@ Frontend: HTML, CSS, JavaScript
 
 Database: MySQL
 
-PDF Generation: 
+PDF Generation: HTML2Canvas
 
 System Architecture
 
